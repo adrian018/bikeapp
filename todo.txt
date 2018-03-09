@@ -1,0 +1,4 @@
+1. Migrat cursele in baza de date - poate mai tarziu
+2. Share dinamic prin model: https://laracasts.com/series/laravel-from-scratch-2017/episodes/19?autoplay=true @ 15
+3. Arhive gen https://laracasts.com/series/laravel-from-scratch-2017/episodes/20?autoplay=true + query scopes + app service providers
+
