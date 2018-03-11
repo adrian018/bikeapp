@@ -28,7 +28,14 @@ class ProfileController extends Controller {
      * @return \Illuminate\Http\Response
      */
     
-    
+
+    public function index(){
+        $users = Auth::user(); // get the user
+        $tracks = Track::find( $users -> id )->tracks;
+       
+        return view('profile.home', compact( 'users', 'tracks' ) );
+    }
+
 
     public function editProfile() {
         $users = Auth::user(); // get the user

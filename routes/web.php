@@ -35,8 +35,7 @@ Route::get( '/tracks/viewtrack/{id}', 'TrackController@viewTrack' ) -> name( 'vi
 * Profile
 **/
 
-
-// edit prpfile
+// edit profile
 Route::get( '/profile/', 'ProfileController@editProfile' ) -> name( 'profile' );
 
 //Update Profile
@@ -53,6 +52,10 @@ Route::get( '/profile/change-password', 'ProfileController@changePassword' ) -> 
 **/
 // index
 Route::get( '/timeline', 'TimelineController@index' ) -> name( 'timeline' );
+
+/**
+* Profile
+**/
 
 // Add Comments
 Route::post( '/timeline', 'CommentsController@store' );
