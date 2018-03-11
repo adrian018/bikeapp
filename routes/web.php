@@ -18,24 +18,30 @@ Route::get('/', function () {
 // Auth
 Auth::routes();
 
+/**
+* Tracks
+*/
+
 // View Tracks
 Route::get( '/tracks', 'ProfileController@index' ) -> name( 'tracks' );
 
 // Vizualizarea in detaliu a unei curse
 Route::get( '/tracks/viewtrack/{id}', 'ProfileController@viewTrack' ) -> name( 'viewtracks' );
 
-Route::post( '/tracks', 'ProfileController@shareTimeline' );
+Route::post( '/tracks', 'ProfileController@shareTimeline' ) -> name( 'tracks' );
 
+/**
+* Profile
+*/
 
-
-// Profile
-Route::get( '/profile/', 'ProfileController@viewProfile' ) -> name( 'profile' );
+// edit prpfile
+Route::get( '/profile/', 'ProfileController@editProfile' ) -> name( 'profile' );
 
 //Update Profile
 Route::post( '/profile', 'ProfileController@updateProfile' );
 
 //Change Password
-Route::get( '/profile/change-password', 'ProfileController@changePassword' );
+Route::get( '/profile/change-password', 'ProfileController@changePassword' ) -> name( 'changePassword' );
 
 //Route::get( '/profile/edit', 'ProfileController@viewProfile' );
 

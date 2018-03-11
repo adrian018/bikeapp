@@ -21,7 +21,7 @@
         <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-heading">Editare Profil <br>
-                    Bun venit, <a href="/profile/{{ $users -> id }}">{{ $users -> name }}</a>
+                    Bun venit, <a href="profile/{{ $users -> id }}">{{ $users -> name }}</a>
                 </div>
 
                 <div class="panel-body">
@@ -32,9 +32,9 @@
                     @endif
 
                     <div class="col-md-3">
-                        <img src="{{ $users -> avatar != 'default.jpg' ?  url('/avatars/' . $users -> id . '/' . $users -> avatar ) : url('/avatars/default.jpg') }}" class="img-responsive" style="width: 300px;" /> 
+                        <img src="{{ $users -> avatar != 'default.jpg' ?  url('/public/avatars/' . $users -> id . '/' . $users -> avatar ) : url('/public/avatars/default.jpg') }}" class="img-responsive" style="width: 300px;" /> 
 
-                        <form enctype="multipart/form-data" action="/profile" method="POST">
+                        <form enctype="multipart/form-data" action="{{ route('profile') }}" method="POST">
                             <label>Update Profile Image</label>
                             <input type="file" name="avatar">
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">

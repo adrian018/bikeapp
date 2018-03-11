@@ -74,11 +74,11 @@
                 <div class="links">
                    
                     @if( !Auth::check() )
-                        <a href="/login">Login</a>
-                        <a href="/register">Register</a>
-                      <a href="/password/reset">Forgot Password</a>
+                        <a href="{{ route('login') }}">Login</a>
+                        <a href="{{ route('register') }}">Register</a>
+                      <a href="{{ route( 'changePassword' ) }}">Forgot Password</a>
                     @else
-                        <a href="/profile">Profile</a>
+                        <a href="{{ route( 'profile' ) }}">Profile</a>
                     @endif
                 </div>
             </div>

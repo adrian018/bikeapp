@@ -11,9 +11,9 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('/public/css/app.css') }}" rel="stylesheet">
 
-    <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ asset('/public/js/app.js') }}"></script>
     @yield( 'custom-scripts' )
 
 </head>
@@ -50,8 +50,8 @@
                     <li><a href="{{ route('login') }}">Login</a></li>
                     <li><a href="{{ route('register') }}">Register</a></li>
                     @else
-                    <li><a href="/timeline">Timeline</a></li>
-                    <li><a href="/tracks">Cursele mele</a></li>
+                    <li><a href="{{ route('timeline') }}">Timeline</a></li>
+                    <li><a href="{{ route('tracks') }}">Cursele mele</a></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                             {{ Auth::user()->name }} <span class="caret"></span>
@@ -59,7 +59,7 @@
 
                         <ul class="dropdown-menu" role="menu">
                             <li>
-                                <a href="/profile"> Editare Profil</a>
+                                <a href="{{ route('profile') }}"> Editare Profil</a>
                             </li>    
                            
                             <li>

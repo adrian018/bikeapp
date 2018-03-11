@@ -33,9 +33,9 @@ class ProfileController extends Controller {
         return view('profile.home', compact( 'users' ) );
     }
 
-    public function viewProfile(  ) {
+    public function editProfile() {
         $users = Auth::user(); // get the user
-        
+        //return $users;
         return view('profile.edit', compact( 'users' ) ); // poate fi creat un appserviceprovider pentru a micsora redundanta
     }
 
@@ -69,7 +69,7 @@ class ProfileController extends Controller {
                 $filename = time() . '.' . $avatar -> getClientOriginalExtension();
                 // muta imaginea in fisierul public/avatars/id-ul utilizatorului
                 // cu denumirea din secundele UNIX si extensia originala
-                $avatar -> move( 'avatars/' . $user -> id,  $filename );
+                $avatar -> move( 'public/avatars/' . $user -> id,  $filename );
                 // seteaza proprietatea avatar al obiectului $request cu noua denumire a fisierului
                 $user -> avatar = $filename;
             } 

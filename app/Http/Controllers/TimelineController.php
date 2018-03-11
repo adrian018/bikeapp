@@ -14,7 +14,7 @@ class TimelineController extends Controller {
 	public function index() {
 
 		$timelines = Timeline::paginate(10);
-		
+		//return $timelines;
 		return view( 'timeline.home', compact( 'timelines' ) );
 	}
 	

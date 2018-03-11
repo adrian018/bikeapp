@@ -1,13 +1,8 @@
 <div class="row">
     <h3 class="text-center">Adauga un comentariu</h3>
-    <form action="/timeline" method="POST" >
-        <div class="col-md-2 text-center thumbs" data-track="{{ $timeline -> id }}" data-user="{{  $timeline -> user -> id }}">
-            <div class="col-xs-6">
-                {!! $timeline -> retriveLikesHates( $timeline -> id, 'likes' ) !!}
-            </div>
-            <div class="col-xs-6">
-                {!! $timeline -> retriveLikesHates( $timeline -> id, 'dislikes' ) !!} 
-            </div>
+    <form action="timeline" method="POST" >
+        <div class="col-md-2 text-center thumbs" data-track="{{ $timeline -> id }}" data-user="{{  $timeline -> user_id }}">
+           
             <input type="submit" value="Send" class="btn btn-primary">
         </div>
     <div class="col-md-10">
