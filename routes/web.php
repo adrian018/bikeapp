@@ -15,7 +15,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// Auth
+/**
+* Auth
+**/
 Auth::routes();
 
 /**
@@ -23,16 +25,16 @@ Auth::routes();
 **/
 
 // View Tracks
-Route::get( '/tracks', 'ProfileController@index' ) -> name( 'tracks' );
+Route::get( '/tracks', 'TrackController@index' ) -> name( 'tracks' );
 
 // Vizualizarea in detaliu a unei curse
-Route::get( '/tracks/viewtrack/{id}', 'ProfileController@viewTrack' ) -> name( 'viewtracks' );
+Route::get( '/tracks/viewtrack/{id}', 'TrackController@viewTrack' ) -> name( 'viewtracks' );
 
-Route::post( '/tracks', 'ProfileController@shareTimeline' ) -> name( 'tracks' );
 
 /**
 * Profile
 **/
+
 
 // edit prpfile
 Route::get( '/profile/', 'ProfileController@editProfile' ) -> name( 'profile' );
@@ -45,14 +47,18 @@ Route::get( '/profile/change-password', 'ProfileController@changePassword' ) -> 
 
 //Route::get( '/profile/edit', 'ProfileController@viewProfile' );
 
-Route::get( '/timeline', 'TimelineController@index' ) -> name( 'timeline' );
 
 /**
-* Profile
+* Timeline
 **/
+// index
+Route::get( '/timeline', 'TimelineController@index' ) -> name( 'timeline' );
 
 // Add Comments
 Route::post( '/timeline', 'CommentsController@store' );
+
+// Share pe timeline
+Route::post( '/timeline', 'TimelineController@shareTimeline' ) -> name( 'shareTrack' );
 
 // Like/dislike Ajax
 Route::post( '/timeline/ajax', 'TimelineController@likeDislike' );

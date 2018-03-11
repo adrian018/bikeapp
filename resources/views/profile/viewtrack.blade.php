@@ -151,7 +151,7 @@ function addtracks( pl, culoare, zoom ) {
                       {{ $status[1] }}
                     </div>
                     @endif
-                    <form action="/tracks" method="POST">
+                    <form action="{{ route( 'shareTrack') }}" method="POST">
                         <input name="user_id" type="hidden" value="{{ Auth::id() }}">
                         {{ csrf_field() }}
                         <input name="info[]" type="hidden" value="{{ $track -> title }}">
