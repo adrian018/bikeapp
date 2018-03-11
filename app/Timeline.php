@@ -18,21 +18,22 @@ class Timeline extends Model {
 
 	public function comments() { // trebuie chemata ca o proprietate si nu ca o metoda
 		// return $this -> hasMany( 'App\Comment', 'timeline_id', 'id' );
-		return $this -> hasMany( Comment::class );
+		return $this -> hasMany( Comment::class, 'timeline_id' );
+	}
+
+	public function user( $userId ) {
+		return $user = User::find( $userId );
 	}
 
 	public function usersComments( $userID ) { // TODO: gaseste un nume mai de doamne-ajuta
 		$user = User::find( $userID );
-		
+		return $user;
 		$this -> user_id = $user -> id;
 		$this -> name = $user -> name;
 		$this -> avatar = $user -> avatar;
 	}
 
-	public function user() {
-		return $this -> hasMany( User::class, 'id' );
-	}
-
+	
 	public function getInfoAttribute( $info ) {
 		return unserialize( $info );
 	}

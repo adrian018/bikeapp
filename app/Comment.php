@@ -12,7 +12,7 @@ class Comment extends Model {
 	protected $fillable = ['comment', 'timeline_id', 'user_id'];
 
 	public function timeline() { // trebuie sa aiba numele parintelui ca sa faca corelatia
-		return $this -> belongsto( Timeline::class );
+		return $this -> hasMany( Timeline::class );
 	}
 
 	

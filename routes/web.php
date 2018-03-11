@@ -20,7 +20,7 @@ Auth::routes();
 
 /**
 * Tracks
-*/
+**/
 
 // View Tracks
 Route::get( '/tracks', 'ProfileController@index' ) -> name( 'tracks' );
@@ -32,7 +32,7 @@ Route::post( '/tracks', 'ProfileController@shareTimeline' ) -> name( 'tracks' );
 
 /**
 * Profile
-*/
+**/
 
 // edit prpfile
 Route::get( '/profile/', 'ProfileController@editProfile' ) -> name( 'profile' );
@@ -46,6 +46,10 @@ Route::get( '/profile/change-password', 'ProfileController@changePassword' ) -> 
 //Route::get( '/profile/edit', 'ProfileController@viewProfile' );
 
 Route::get( '/timeline', 'TimelineController@index' ) -> name( 'timeline' );
+
+/**
+* Profile
+**/
 
 // Add Comments
 Route::post( '/timeline', 'CommentsController@store' );
