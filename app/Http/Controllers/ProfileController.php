@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Input as Input;
 use Auth;
 use App\Profile;
 use App\Timeline;
+use App\Track;
 
 
 class ProfileController extends Controller {
@@ -29,8 +30,9 @@ class ProfileController extends Controller {
     
     public function index(){
         $users = Auth::user(); // get the user
-        
-        return view('profile.home', compact( 'users' ) );
+        $tracks = Track::find( $users -> id )->tracks;
+       
+        return view('profile.home', compact( 'users', 'tracks' ) );
     }
 
     public function editProfile() {

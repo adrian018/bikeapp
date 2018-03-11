@@ -3,7 +3,7 @@
 @section( 'custom-scripts' )
 
 <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyDdLSrA9nIpqdBf2vPdkWFJL2Yi7diMCgI&libraries=geometry&sensor=true&ver=1.9"></script>
-<script type="text/javascript" src="{{ URL::asset('js/profile/gmaps.js') }}"></script>
+<script type="text/javascript" src="{{ URL::asset('public/js/profile/gmaps.js') }}"></script>
 
 @endsection
 
