@@ -33,6 +33,12 @@ class Timeline extends Model {
 		$this -> avatar = $user -> avatar;
 	}
 
+	public function avatarUrl( $user_id ) {
+		if ( $this -> user( $user_id ) -> avatar == 'default.jpg' ) {
+            return url('public/avatars/default.jpg');
+        }
+        return url('public/avatars/' . $user_id . '/' . $this -> user( $user_id ) -> avatar );
+    }
 	
 	public function getInfoAttribute( $info ) {
 		return unserialize( $info );

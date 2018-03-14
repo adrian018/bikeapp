@@ -12,7 +12,7 @@ class TracksSeeder extends Seeder
      */
     public function run()
     {
-        $tracks = json_decode( file_get_contents( 'http://ivelo.conceptapps.ro/api/v2/bike2work/catalix@live.com' ), true );
+        $tracks = json_decode( file_get_contents( 'http://ivelo.conceptapps.ro/api/v2/bike2work/andrei.ionescu@stefanini.com' ), true );
 
             foreach( $tracks['data'] as $track ) {
 
@@ -50,8 +50,8 @@ class TracksSeeder extends Seeder
 
 
         DB::table('tracks')->insert([
-            'user_id'       => 1,
-            'track'         => $track -> track,
+            'user_id'       => 3,
+            'track'         => $track -> track_simplified,
             'meta'          => $meta,
             'small_tracks'  => $smalltrack,
             'start_date'    => $track -> start_time,

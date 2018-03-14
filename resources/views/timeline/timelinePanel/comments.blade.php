@@ -3,7 +3,7 @@
       <div class="author-info">
         <div class="pull-left image">
               
-          <img class="img-circle avatar" style="max-width: 100%;" src="{{  $timeline -> user( $comment -> user_id ) -> avatar == 'default.jpg' ? url('public/avatars/default.jpg') : url('public/avatars/' . $timeline ->  user_id . '/' .$timeline -> user( $comment -> user_id ) -> avatar ) }}" alt="" /> 
+          <img class="img-circle avatar" style="max-width: 100%;" src="{{ $timeline -> avatarUrl( $comment -> user_id ) }}" alt="" /> 
             
         </div>
         <div class="pull-left meta">

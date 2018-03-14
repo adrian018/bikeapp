@@ -13,6 +13,10 @@ use App\Track;
 
 class TrackController extends Controller {
 
+    public function __construct() {
+        $this->middleware('auth');
+    }
+
     public function index(){
         $users = Auth::user(); // get the user
         $tracks = Track::find( Auth::user() -> id )-> tracks;

@@ -8,13 +8,14 @@ use Carbon\Carbon;
 use App\Comment;
 use App\Usermeta;
 use Auth;
+use App\User;
 
 
 class TimelineController extends Controller {
 	public function index() {
 		
 		$timelines = Timeline::paginate(10);
-		
+		// return $timelines -> avatarUrl();
 		return view( 'timeline.home', compact( 'timelines' ) );
 	}
 	

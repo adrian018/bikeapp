@@ -30,7 +30,7 @@ class ProfileController extends Controller {
     
 
     public function index(){
-        $users = Auth:: user(); // get the user
+        $users = Auth::user(); // get the user
         $tracks = Track::find( $users -> id )->tracks;
         
         return view('profile.home', compact( 'users', 'tracks' ) );
