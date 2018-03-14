@@ -66,28 +66,4 @@ class TimelineController extends Controller {
 		}
 
 	}
-
-	public function shareTimeline( Request $request ) {
-       
-        $timeline = new Timeline();
-        $timeline -> user_id = $request -> user_id;
-        $timeline -> track_id = $request -> track_id;
-        $timeline -> info = serialize( $request -> info );
-        $timeline -> track =  $request -> track;
-        
-       if ( Timeline::where( 'track_id', '=', $request -> track_id ) -> count() > 0 ) {
-            return redirect( '/tracks/viewtrack/' . $timeline -> track_id )
-                        -> with( 'status', array(  'warning' , 'Cursa a fost distribuita deja' ) ); 
-        } else {
-            $save = $timeline -> save();
-                  
-            if ( $save ) {
-                return redirect( '/tracks/viewtrack/' . $timeline -> track_id )
-                        -> with( 'status', array( 'success', 'Cursa a fost distribuita cu succes' ) );
-            } else {
-                return redirect( '/tracks/viewtrack/' . $timeline -> track_id )
-                        -> with( 'status', array(  'danger' , 'A aparut o eroare :( mai trage un loz' ) ); 
-            }
-        }
-    }
 }

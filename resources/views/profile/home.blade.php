@@ -59,13 +59,13 @@
         viteza_medie = 0;
 
         var table = jQuery('#track-list tbody'); // scurtatura pentru selectorul tabelului
-        var path = 'http://dev.risksoft.ro/bike/bikes/' + user + '.php'; // crearea url-ului pentru JSON
+        var path = "{{-- route( 'tracksAPI' ) --}}"; // crearea url-ului pentru JSON
         
         var rows = '';
 
-        jQuery.getJSON( path, function( response ) {
-            if (response.status == 'ok') { // raspun 'ok' din partea server-ului
-                if (response.data.length > 0) { // user ok, exista si curse
+        
+
+              /*  if (response.data.length > 0) { // user ok, exista si curse
                     nr_curse = response.data.length; 
 
                     jQuery.each(response.data, function( index, value ) {
@@ -103,13 +103,9 @@
                     rows = '<td colspan="5" class="info">Nu ai inca vreun traseu inregistrat in aplicatie.</td>';
                     jQuery(table).empty();
                     jQuery(rows).appendTo(table);
-                }
-            } else { //  eroare JSON
-                rows = '<td colspan="5" class="info">Eroare aplicatie</td>';
-                jQuery(table).empty();
-                jQuery(rows).appendTo(table);
-            }
-        });
+                }*/
+            
+       
 
     } else { // user-ul nu e logat
         rows = '<td colspan="5" class="info">Va rugam sa va logati</td>';
@@ -159,6 +155,22 @@
 
 });
 
+jQuery( document ).ready( function() {
+    @foreach( $tracks as $track )
+        @if ( $track[ 'small_tracks' ] )
+            @foreach ( $track[ 'small_tracks' ] as $small_track )
+                @if( $small_track[ 'type' ] == 1 )
+                    addtracks( '{{ str_replace( "\\", "\\\\", $small_track[ "track" ] ) }}', '#3dff00', 0 );
+                @else 
+                    addtracks( '{{ str_replace( "\\", "\\\\", $small_track[ "track" ] ) }}', '#000', 0 );
+                @endif
+            @endforeach
+        @else
+            addtracks( '{{ str_replace( "\\", "\\\\", $track ->  track ) }}', '#3dff00', false  );
+        @endif
+    @endforeach  
+})
+
 // Zoom catre o polilinie
 function zoomToObject( obj ) {
     // returneaza limetele hartii - momentan -180 180 long, -90 90 lat
@@ -199,6 +211,7 @@ function addtracks( pl, culoare, zoom ) {
     }
 }
 </script>
+ 
 
 <div class="container" id="tracks">
     <div class="row">
@@ -213,6 +226,9 @@ function addtracks( pl, culoare, zoom ) {
                     <th>Vezi detalii</th>
                 </thead>
                 <tbody>
+                    @foreach( $tracks as $track )
+                      <tr><td><a href="#" class="show-track" data-polyline='{{ $track ->  track }}'>{{ $track -> meta[0] == '' ? "Cursa " . $track -> id : $track -> meta[0] }}</a></td><td>{{ $track -> start_date }}</td><td>{{ $track -> end_date }}</td><td>{{ $track -> meta[2] }} minute </td><td><a href="{{ route( 'tracks' ) }}/{{ $track -> id }}">Vezi detalii</a></td></tr>
+                    @endforeach
                 </tbody>
                 <tfoot>
                 </tfoot>

@@ -12,42 +12,52 @@ class TracksSeeder extends Seeder
      */
     public function run()
     {
-        $tracks = json_decode( file_get_contents( 'http://dev.risksoft.ro/bike/bikes/test@test.com.php' ), true );
+        $tracks = json_decode( file_get_contents( 'http://ivelo.conceptapps.ro/api/v2/bike2work/catalix@live.com' ), true );
 
             foreach( $tracks['data'] as $track ) {
 
                 
                     $track = (object)$track;
                     // rezolva problema escape-ului cauzat de '\' 
-                    $track -> track = str_replace( "\\", "\\\\", $track -> track);
-
+                    //$track -> track = str_replace( "\\", "\\\\", $track -> track);
+                    $meta = array();
+                    array_push($meta,  $track -> description);
+                    array_push($meta,  $track -> distance);
+                    array_push($meta,  $track -> duration);
+                    array_push($meta,  $track -> avg_speed);
+                    array_push($meta,  $track -> max_speed);
+                    $meta = serialize( $meta );
+                    
                     // verifica daca sunt si trasee coomplexe
-                    if( count( $track -> smalltracks ) > 0 ) {
-                        $smalltrack = array();
-                        // rezolva problema escape-ului cauzat de '\' 
-                       // for( $i = 0; $i < count( $track -> smalltracks ); $i++ ) {
-                            //$track -> smalltracks[ $i ] = str_replace( "\\", "\\\\", $track -> smalltracks[ $i ] );
-                            
-                       // }
-                        array_push($smalltrack,  $track -> smalltracks);
-                        $smalltrack = serialize( $smalltrack );
+                    if( isset( $track -> smalltracks ) ) {
+
+                        if( count( $track -> smalltracks ) > 0  ) {
+                            $smalltrack = array();
+                           //vazut daca asta rezolva problema
+                            $smalltrack = $track -> smalltracks ;
+                            $smalltrack = serialize( $smalltrack );
+
+                        } else {
+                            $smalltrack = NULL;
+                        }
 
                     } else {
                         $smalltrack = NULL;
                     }
+
   
                 
 
 
-            DB::table('tracks')->insert([
+        DB::table('tracks')->insert([
             'user_id'       => 1,
             'track'         => $track -> track,
-            'meta'          => $track -> start_time,
+            'meta'          => $meta,
             'small_tracks'  => $smalltrack,
             'start_date'    => $track -> start_time,
             'end_date'      => $track -> start_time,
             
-         ]);
+        ]);
 
 
         } 

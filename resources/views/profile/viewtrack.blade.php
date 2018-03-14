@@ -110,39 +110,26 @@ function addtracks( pl, culoare, zoom ) {
     }
 }
 
-// verifica daca exista curse multiple
-@if ( property_exists ( $track, 'smalltracks' )  )
-    @if( count( $track -> smalltracks ) > 0  )
-        // daca da, parcurge-le
-        @foreach( $track -> smalltracks as $smalltracks )    
-            // cursa valida
-            @if ( $smalltracks[ 'type' ] == 1 )
-                // deseneaza cursa pe harta cu verde
-                addtracks( "{{ $smalltracks[ 'track' ] }}", '#3dff00', 0 );
-                @else
-                //cursa invalida
-                //deseneaza cursa cu negru
-                addtracks( "{{ $smalltracks[ 'track' ] }}", '#aaa', 0 ); 
-                @endif
-                @endforeach
-                @else 
-       
-    @endif
-// daca nu exista, atunci deseneaza cursa principala
-@else  
-    addtracks("{!! $track -> track !!}")
+@if ( $track[ 'small_tracks' ] )
+    @foreach ( $track[ 'small_tracks' ] as $small_track )
+        @if( $small_track[ 'type' ] == 1 )
+            addtracks( '{{ str_replace( "\\", "\\\\", $small_track[ "track" ] ) }}', '#3dff00', 0 );
+        @else 
+            addtracks( '{{ str_replace( "\\", "\\\\", $small_track[ "track" ] ) }}', '#000', 0 );
+        @endif
+    @endforeach
+    @else
+    addtracks( '{{ str_replace( "\\", "\\\\", $track ->  track ) }}', '#3dff00', false  );
 @endif
-
 });
 </script>
 
-
+   
 <div class="container">
     <div class="row">
-
         <div class="col-md-12">
             <div class="panel panel-default">
-                <div class="panel-heading">Vizualizare cursa {{ $track -> id }} - {{ $track -> title }}  
+                <div class="panel-heading"><p>Vizualizare cursa {{ $track -> id }} - {{ $track -> meta[ 0 ] }}</p>
                     @if (session('status'))
                     @php
                         $status = session( 'status' )
@@ -151,18 +138,21 @@ function addtracks( pl, culoare, zoom ) {
                       {{ $status[1] }}
                     </div>
                     @endif
-                    <form action="{{ route( 'shareTrack') }}" method="POST">
-                        <input name="user_id" type="hidden" value="{{ Auth::id() }}">
-                        {{ csrf_field() }}
-                        <input name="info[]" type="hidden" value="{{ $track -> title }}">
-                        <input name="track_id" type="hidden" value="{{ $track -> id }}">
-                        <input name="info[]" type="hidden" value="{{ $track -> avg_speed }}">
-                        <input name="info[]" type="hidden" value="{{ $track -> max_speed }}">
-                        <input name="info[]" type="hidden" value="{{ $track -> duration }}">
-                        <input name="info[]" type="hidden" value="{{ $track -> distance }}">
-                        <input name="track" type="hidden" value="{{ $track -> track_simplified }}">
-                        <input type="submit" class="btn btn-success" value="Share">
-                    </form>
+                    <div class="btn-group">
+                        <form action="{{ route( 'shareTrack') }}" method="POST" class="pull-left">
+                            <input name="user_id" type="hidden" value="{{ Auth::id() }}">
+                            {{ csrf_field() }}
+                            <input name="info[]" type="hidden" value="{{ $track -> meta[ 0 ] }}">
+                            <input name="track_id" type="hidden" value="{{ $track -> id }}">
+                            <input name="info[]" type="hidden" value="{{ $track -> meta[ 3 ] }}">
+                            <input name="info[]" type="hidden" value="{{ $track -> meta[ 4 ] }}">
+                            <input name="info[]" type="hidden" value="{{ $track -> meta[ 2 ] }}">
+                            <input name="info[]" type="hidden" value="{{ $track -> meta[ 1 ] }}">
+                            <input name="track" type="hidden" value="{{ $track -> track }}">
+                            <input type="submit" class="btn btn-success" value="Share">
+                        </form>
+                        <a href="{{ route( 'tracks' ) }}" class="btn btn-primary pull-left">Inapoi la curse</a>
+                    </div>
                 </div>
                 
                 <div class="panel-body">
@@ -171,8 +161,7 @@ function addtracks( pl, culoare, zoom ) {
 
                   <table id="detalii" class="table">
                     <!-- verifica daca exista curse multiple -->
-                   @if ( property_exists ( $track, 'smalltracks' ) && count( $track -> smalltracks ) > 0 )
-                 
+                    @if( $track -> small_tracks != NULL )
                     <thead>
                         <tr>
                             <th>Tip cursa</th>
@@ -187,34 +176,34 @@ function addtracks( pl, culoare, zoom ) {
                     <tbody>
                         <tr>
                             <td><a href="javascript:void(0)" class="show_full_track">Principala</a></td>
-                            <td>{{ $track -> start_time }}</td>
-                            <td>{{ $track -> end_time }}</td>
-                            <td>{{ $track -> duration }}</td>
-                            <td>{{ $track -> max_speed }}</td>
-                            <td>{{ $track -> avg_speed }}</td>
-                            <td>{{ $track -> distance }}</td>
+                            <td>{{ $track -> start_date }}</td>
+                            <td>{{ $track -> end_date }}</td>
+                            <td>{{ $track -> meta[ 2 ] }}</td>
+                            <td>{{ $track -> meta[ 4 ]}}</td>
+                            <td>{{ $track -> meta[ 3 ] }}</td>
+                            <td>{{ $track -> meta[ 1 ] }}</td>
                         </tr>
                         <!-- parcurge cursele multiple  -->
-                        @foreach( $track -> smalltracks as $smalltracks )
-
                         <tr>
-                            <td>
-                                @if ( $smalltracks[ 'type' ] == 1 )
-                                <!-- cursa valida -->
-                                <a href="javascript:void(0)" class="show_start_track" data-polyline="{{ $smalltracks[ 'track' ] }}">Start</a>
-                                @else
-                                <!-- cursa invalida  -->
-                                <a href="javascript:void(0)" class="show_stop_track" data-polyline="{{ $smalltracks[ 'track' ] }}">Stop</a>
+                            @foreach ( $track[ 'small_tracks' ] as $small_track )
+                                @if( $small_track[ 'type' ] == 1 )
+                                   <td>
+                                        <a href="javascript:void(0)" class="show_start_track" data-polyline="{{ $small_track[ 'track' ] }}">Start</a>
+                                    </td>
+                                @else 
+                                    <td>
+                                        <a href="javascript:void(0)" class="show_stop_track" data-polyline="{{ $small_track[ 'track' ] }}">Stop</a>
+                                    </td>
                                 @endif
-                            </td>
-                            <td>{{ $smalltracks[ 'start_time' ] }}</td>
-                            <td>{{ $smalltracks[ 'end_time' ] }}</td>
-                            <td>{{ $smalltracks[ 'duration' ] }}</td>
-                            <td>{{ $smalltracks[ 'max_speed' ] }}</td>
-                            <td>{{ round( $smalltracks[ 'avg_speed' ], 2 ) }}</td>
-                            <td>{{ $smalltracks[ 'distance' ] }}</td>
+                                <td>{{ $small_track [ 'start_time' ] }}</td>
+                                <td>{{ $small_track [ 'start_time' ] }}</td>
+                                <td>{{ $small_track [ 'duration' ] }}</td>
+                                <td>{{ $small_track [ 'max_speed' ] }}</td>
+                                <td>{{ $small_track [ 'avg_speed' ] }}</td>
+                                <td>{{ $small_track [ 'distance' ] }}</td>
                         </tr>
-                        @endforeach
+                            @endforeach
+                       
                     </tbody>
                     @else
                     <!-- cursa normala  -->
@@ -230,18 +219,16 @@ function addtracks( pl, culoare, zoom ) {
                     </thead>
                     <tbody>
                         <tr>
-                            <td>{{ $track -> start_time }}</td>
-                            <td>{{ $track -> end_time }}</td>
-                            <td>{{ $track -> duration }}</td>
-                            <td>{{ $track -> max_speed }}</td>
-                            <td>{{ $track -> avg_speed }}</td>
-                            <td>{{ $track -> distance }}</td>
+                            <td>{{ $track -> start_date }}</td>
+                            <td>{{ $track -> end_date }}</td>
+                            <td>{{ $track -> meta[ 2 ] }}</td>
+                            <td>{{ $track -> meta[ 4 ] }}</td>
+                            <td>{{ $track -> meta[ 3 ] }}</td>
+                            <td>{{ $track -> meta[ 1 ] }}</td>
                         </tr>    
                     </tbody>
                     @endif
-                   
                 </table>
-
             </div>
         </div>
     </div>

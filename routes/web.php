@@ -28,8 +28,10 @@ Auth::routes();
 Route::get( '/tracks', 'TrackController@index' ) -> name( 'tracks' );
 
 // Vizualizarea in detaliu a unei curse
-Route::get( '/tracks/viewtrack/{id}', 'TrackController@viewTrack' ) -> name( 'viewtracks' );
+Route::get( '/tracks/{id}', 'TrackController@viewTrack' ) -> name( 'viewtracks' );
 
+// Share pe timeline
+Route::post( '/tracks', 'TrackController@shareTimeline' ) -> name( 'shareTrack' );
 
 /**
 * Profile
@@ -59,9 +61,6 @@ Route::get( '/timeline', 'TimelineController@index' ) -> name( 'timeline' );
 
 // Add Comments
 Route::post( '/timeline', 'CommentsController@store' );
-
-// Share pe timeline
-Route::post( '/timeline', 'TimelineController@shareTimeline' ) -> name( 'shareTrack' );
 
 // Like/dislike Ajax
 Route::post( '/timeline/ajax', 'TimelineController@likeDislike' );
