@@ -9,7 +9,7 @@
 		<div class="row"
 			<div class="col-lg-12">
 				@forelse($users as $user)
-					@include('search.userblock')
+					@include('blocks.userblock')
 				@empty
 				<p>No results found, sorry.</p
 				@endforelse

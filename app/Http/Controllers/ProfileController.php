@@ -10,6 +10,7 @@ use Auth;
 use App\Profile;
 use App\Timeline;
 use App\Track;
+use App\User;
 
 
 class ProfileController extends Controller {
@@ -23,12 +24,11 @@ class ProfileController extends Controller {
     }
 
     /**
-     * Show the application dashboard.
+     * Show the user profile.
      *
-     * @return \Illuminate\Http\Response
+     * @return array $users, $tracks
      */
     
-
     public function index(){
         $users = Auth::user(); // get the user
         $tracks = Track::find( $users -> id )->tracks;
@@ -36,6 +36,26 @@ class ProfileController extends Controller {
         return view('profile.home', compact( 'users', 'tracks' ) );
     }
 
+    /**
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Http\Response
+     */
+
+    public function getProfile( $username ) {
+        $user = User::where( 'username', $username ) -> first();
+        if( !$user ) {
+            abort( 404 );
+        }
+
+        return view( 'profile.index', compact( 'user' ) );
+    }
+
+    /**
+     * Edit Profile
+     *
+     * @return array $users
+     */
 
     public function editProfile() {
         $users = Auth::user(); // get the user
@@ -43,52 +63,51 @@ class ProfileController extends Controller {
         return view('profile.edit', compact( 'users' ) ); // poate fi creat un appserviceprovider pentru a micsora redundanta
     }
 
+    /**
+     * Update profile
+     *
+     * @return \Illuminate\Http\Response
+     */
 
     public function updateProfile( Request $request ) {
-
-        // creaza o noua instanta a validatorului
-        $validator = Validator::make( $request -> all(), [
-            // camp optional, doar imagini tip jpeg, jpg, png cu o dimensiune de maxim 1 MB
+        $this -> validate( $request, [
+            'first_name'  => 'alpha | min:5 | max: 50',
+            'first_name'  => 'alpha | min:5 | max: 50',
+            'location'    => 'max: 25',
             'avatar' => 'mimes:jpeg, jpg, png | max:1024',
-            // camp obligatoriu, cu o lungime de minim 5 caractere si maxim 50
-            'name'  => 'required | min:5 | max: 50',
-            // camp obligatoriu, cu o lungime de minim 5 caractere si maxim 50
-            'email'  => 'required | min:10 | max: 50',
-        ] );
 
-        // verificam daca sunt intrunite conditiile validatorului
-        if ( $validator -> fails() ) {
-            // daca nu, atunci vom fi redirectionati catre pagina profilului unde vor fi afisate erorile
-            return redirect( '/profile' )
-                -> withInput()
-                -> withErrors( $validator );
-        }  else {
-            // daca da, atunci profilul va fi actualizat
-            $user = Auth::user();
-            // verificam daca a fost setata si o poza noua
-            if( $request -> hasFile( 'avatar' ) ) {
+        ] );
+       
+       
+              
+        // TODO: verificat daca poza a fost schimbata
+        if( $request -> hasFile( 'avatar' ) ) {
                 // daca da, variabla $avatar va fi obiectul imaginii
-                $avatar = $request -> file( 'avatar' );
+            $avatar = $request -> file( 'avatar' );
                 // creaza un sir de caractere formate din secundele UNIX si extensia fisierului
-                $filename = time() . '.' . $avatar -> getClientOriginalExtension();
+            $filename = time() . '.' . $avatar -> getClientOriginalExtension();
                 // muta imaginea in fisierul public/avatars/id-ul utilizatorului
                 // cu denumirea din secundele UNIX si extensia originala
-                $avatar -> move( 'public/avatars/' . $user -> id,  $filename );
+            $avatar -> move( 'public/avatars/' . $user -> id,  $filename );
                 // seteaza proprietatea avatar al obiectului $request cu noua denumire a fisierului
-                $user -> avatar = $filename;
-            } 
 
-            // update in baza de date; campul avatar e de tip obiect dar pentru a-l putea salva in baza de date, il vom seta ca sir de caractere
-            $user -> update( array_merge( $request -> all(), [ 'avatar' => $user -> avatar ] ) );
-
-            // redirectionare catre pagina profilului
-            return redirect( '/profile' );
+        } else {
+            $filename = $user -> avatar;
         }
 
+        Auth::user() -> update([
+            'first_name'    => $request -> first_name,
+            'last_name'     => $request -> last_name,
+            'location'      => $request -> location,
+            'avatar'        => $filename
+        ]);
+
+        
+        // redirectionare catre pagina profilului
+        return redirect( route( 'profile.update' ) );
     }
 
     public function changePassword() {
-
         return view( 'profile.changepassword' );
     }
 

@@ -28,17 +28,17 @@
  			<li><a href="{{ route('register') }}">Register</a></li>
  			@else
  			<li><a href="{{ route('timeline') }}">Timeline</a></li>
- 			<li><a href="{{ route('tracks') }}">Cursele mele</a></li>
+ 			<li><a href="{{ route('tracks') }}">Tracks</a></li>
  			<li class="dropdown">
- 				<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
- 					{{ Auth::user()->name }} <span class="caret"></span>
+ 				<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" >
+ 					{{ Auth::user() -> getFirstNameOrUsername() }}
+ 					<span class="dropdown-toggle caret" data-toggle="dropdown" role="button" aria-expanded="false"></span>
  				</a>
  				<ul class="dropdown-menu" role="menu">
- 					<li>
- 						<a href="{{ route('profile') }}"> Editare Profil</a>
- 					</li>    
- 					<li>
- 						<a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+ 					<li><a href="{{ route( 'profile.index', [ 'username' => Auth::user() -> username ] ) }}" class="dropdown-toggle" >Profile</a></li>
+ 					<li><a href="{{ route( 'friend.index' ) }}">Friends</a></li>
+ 					<li><a href="{{ route( 'profile' ) }}"> Edit Profile</a></li>    
+ 					<li><a href="{{ route( 'logout' ) }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
  							Logout
  						</a>
  						<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
@@ -46,7 +46,10 @@
  						</form>
  					</li>
  				</ul>
+ 				
  			</li>
+ 			
+ 			<img src="{{ Auth::user() -> avatarUrl() }}" alt="" id="user-img" class="img-responsive img-circle pull-right" />
  			@endguest
  		</ul>
  	</div>

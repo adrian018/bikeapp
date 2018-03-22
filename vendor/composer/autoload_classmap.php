@@ -16,6 +16,7 @@ return array(
     'App\\Http\\Controllers\\CommentsController' => $baseDir . '/app/Http/Controllers/CommentsController.php',
     'App\\Http\\Controllers\\Controller' => $baseDir . '/app/Http/Controllers/Controller.php',
     'App\\Http\\Controllers\\ProfileController' => $baseDir . '/app/Http/Controllers/ProfileController.php',
+    'App\\Http\\Controllers\\SearchController' => $baseDir . '/app/Http/Controllers/SearchController.php',
     'App\\Http\\Controllers\\TimelineController' => $baseDir . '/app/Http/Controllers/TimelineController.php',
     'App\\Http\\Controllers\\TrackController' => $baseDir . '/app/Http/Controllers/TrackController.php',
     'App\\Http\\Kernel' => $baseDir . '/app/Http/Kernel.php',

@@ -8,7 +8,7 @@
         </div>
         <div class="pull-left meta">
           <div class="title h5">
-           <b>{{ $timeline -> user( $comment -> user_id ) -> name }}</b> a adaugat un comentariu
+           <b>{{ App\User::find( $comment -> user_id ) -> getNameOrUsername() }}</b> a adaugat un comentariu
          </div>
          <h6 class="text-muted time">Acum {{ $comment -> created_at -> diffForHumans() }}</h6>
        </div>  

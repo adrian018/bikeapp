@@ -8482,3 +8482,8 @@ panel-white {
   color: red;
 }
 
+.navbar .navbar-right #user-img {
+  max-height: 40px;
+  margin-top: 5px;
+}
+

@@ -16,7 +16,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="panel panel-default">
-                <div class="panel-heading">Cursele Tale</div>
+                <div class="panel-heading">Your tracks</div>
 
                 <div class="panel-body">
                     @if (session('status'))
@@ -25,7 +25,7 @@
                     </div>
                     @endif
 
-                    Bun venit, <a href="/profile/{{ $users -> id }}">{{ $users -> name }}</a>
+                    Welcome, <a href="/profile/{{ $users -> id }}">{{ $users -> name }}</a>
 
                 </div>
             </div>
@@ -63,48 +63,7 @@
         
         var rows = '';
 
-        
-
-              /*  if (response.data.length > 0) { // user ok, exista si curse
-                    nr_curse = response.data.length; 
-
-                    jQuery.each(response.data, function( index, value ) {
-
-                        durata_totala += parseInt( value.duration ); // distanta totala
-                        km_parcursi += parseInt( value.distance ); // nr de km parcursi
-                        viteza_medie += parseInt( value.avg_speed ); // viteza medie
-                        
-                            // verificarea existentei mini-curselor
-                            if ( value.smalltracks == '' || typeof(value.smalltracks) == 'undefined' ) { // nu exista mini-curse
-                                rows += '<tr ' + '""><td><a href="#" class="show-track" data-polyline="' + value.track + '">' + value.title + '</a></td><td>' + value.start_time + '</td><td>' + value.end_time + ' </td><td>' + value.duration + ' minute </td><td><a href="{{ route( 'tracks' ) }}/viewtrack/' + value.id + '">Vezi detalii</a></td></tr>';
-                                addtracks( value.track, '#131540' ,0 ); // deseneaza polilinia pe harta
-                            } else { // exista mini-curse
-                                rows += '<tr ' + '><td><a href="#" class="show-multiple-tracks" data-polylines="';
-                                jQuery(value.smalltracks).each(function( k, v ) {
-                                    if (v.type === 1) { // cursa start
-                                        rows += v.track + 'dap-sfarsit-';
-                                        addtracks( v.track, '#3dff00', 0 );
-                                    } else { // cursa stop
-                                        rows += v.track + 'nu-sfarsit-';
-                                        addtracks( v.track, '#000', 0 );
-                                    }
-                                })
-
-                                rows += ' ">' + value.title + '</a></td><td>' + value.start_time + '</td><td>' + value.end_time + ' </td><td>' + value.duration + ' minute</td><td><a href="{{ route( 'tracks' ) }}/viewtrack/' + value.id + '">Vezi detalii multiple</a></td></tr>';
-                            }
-                        });
-                    // crearea status-ului privind cursele utilizatorului
-                    status = '<div class="col-md-12" id="status"><strong>Durata totala: </strong>' + durata_totala .toFixed(2) + ' minute<br /><strong>Kilometrii parcursi: </strong>' +  km_parcursi.toFixed(2) + ' km<br /><strong>Viteza medie: </strong>' + ( viteza_medie / nr_curse ).toFixed(2) + ' km/h</div>';
-
-                jQuery(rows).appendTo(table); // lipirea variabilei rows in corpul tabelului
-                jQuery('#track-list').after( status ); // lipirea variabilei status la finalul tabelului
-
-                } else { // user ok, nu exista curse
-                    rows = '<td colspan="5" class="info">Nu ai inca vreun traseu inregistrat in aplicatie.</td>';
-                    jQuery(table).empty();
-                    jQuery(rows).appendTo(table);
-                }*/
-            
+    
        
 
     } else { // user-ul nu e logat

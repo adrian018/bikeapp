@@ -310,6 +310,7 @@ class ComposerStaticInit43b9ce05e7d504090b66286f75299f5c
         'App\\Http\\Controllers\\CommentsController' => __DIR__ . '/../..' . '/app/Http/Controllers/CommentsController.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
         'App\\Http\\Controllers\\ProfileController' => __DIR__ . '/../..' . '/app/Http/Controllers/ProfileController.php',
+        'App\\Http\\Controllers\\SearchController' => __DIR__ . '/../..' . '/app/Http/Controllers/SearchController.php',
         'App\\Http\\Controllers\\TimelineController' => __DIR__ . '/../..' . '/app/Http/Controllers/TimelineController.php',
         'App\\Http\\Controllers\\TrackController' => __DIR__ . '/../..' . '/app/Http/Controllers/TrackController.php',
         'App\\Http\\Kernel' => __DIR__ . '/../..' . '/app/Http/Kernel.php',

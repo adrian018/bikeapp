@@ -6,22 +6,12 @@
 
 @section('content')
 
-@if ($errors->any())
-<div class="alert alert-danger">
-    <ul>
-        @foreach ($errors->all() as $error)
-        <li>{{ $error }}</li>
-        @endforeach
-    </ul>
-</div>
-@endif
-
 <div class="container">
     <div class="row">
         <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-heading">Editare Profil <br>
-                    Bun venit, <a href="profile/{{ $users -> id }}">{{ $users -> name }}</a>
+                    Bun venit, {{ $users -> getNameOrUsername() }}
                 </div>
 
                 <div class="panel-body">
@@ -38,27 +28,52 @@
                             <label>Update Profile Image</label>
                             <input type="file" name="avatar">
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                          
-
                         </div>
                         <div class="col-md-9">
-                            <h2 class="page-title">Profile info</h2>
                             <div class="form-horizontal">
-                                <div class="form-group">
-                                    <label class="control-label col-sm-2" for="name">Name:</label>
+                                <div class="form-group{{ $errors -> has( 'first_name' ) ? ' has-error' : '' }}">
+                                    <label class="control-label col-sm-2" for="first_name">First Name:</label>
                                     <div class="col-sm-6">
-                                        <input name="name" type="text" class="form-control" required value="{{ $users -> name }}"></input>
+                                        <input name="first_name" type="text" class="form-control" value="{{ Auth::user() -> first_name ?: Request::old( 'first_name' ) }}" />
+                                        @if( $errors -> has( 'first_name' ) )
+                                            <span class="help-block">{{ $errors -> first( 'first_name' ) }}</span>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
                             <div class="form-horizontal">
-                                <div class="form-group">
+                                <div class="form-group{{ $errors -> has( 'last_name' ) ? ' has-error' : '' }}">
+                                    <label class="control-label col-sm-2" for="last_name">Last Name:</label>
+                                    <div class="col-sm-6">
+                                        <input name="last_name" type="text" class="form-control" value="{{ Auth::user() -> last_name ?: Request::old( 'last_name' ) }}" />
+                                        @if( $errors -> has( 'last_name' ) )
+                                            <span class="help-block">{{ $errors -> first( 'last_name' ) }}</span>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-horizontal">
+                                <div class="form-group{{ $errors -> has( 'location' ) ? ' has-error' : '' }}">
+                                    <label class="control-label col-sm-2" for="email">Location:</label>
+                                    <div class="col-sm-6">
+                                        <input name="location" type="text" class="form-control" value="{{ Auth::user() ->location ?: Request::old( 'location' ) }}" />
+                                         @if( $errors -> has( 'location' ) )
+                                            <span class="help-block">{{ $errors -> first( 'location' ) }}</span>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-horizontal">
+                                <div class="form-group{{ $errors -> has( 'email' ) ? ' has-error' : '' }}">
                                     <label class="control-label col-sm-2" for="email">Email:</label>
                                     <div class="col-sm-6">
-                                        <input name="email" type="email" class="form-control" required value="{{ $users -> email }}"></input>
+                                        <input name="email" type="email" class="form-control" value="{{ Auth::user() ->email ?: Request::old( 'email' ) }}" />
+                                         @if( $errors -> has( 'email' ) )
+                                            <span class="help-block">{{ $errors -> first( 'email' ) }}</span>
+                                        @endif
                                     </div>
                                 </div>
-                            </div>
+                            </div>  
                             <div class="form-horizontal">
                                 <div class="form-group">
                                     <div class="col-sm-6 col-md-offset-2">
@@ -75,7 +90,7 @@
 </div>
 
 <div class="container">
-   <div class="row">
+ <div class="row">
     <div class="col-md-10 col-md-offset-2">
 
     </div>

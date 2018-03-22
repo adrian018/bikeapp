@@ -10,7 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+use App\User;
 Route::get('/', function () {
     return view('welcome');
 });
@@ -37,27 +37,34 @@ Route::post( '/tracks', 'TrackController@shareTimeline' ) -> name( 'shareTrack' 
 * Profile
 **/
 
-// edit profile
-Route::get( '/profile/', 'ProfileController@editProfile' ) -> name( 'profile' ) -> middleware( 'auth' );
+// Edit profile
+Route::get( '/profile/edit', 'ProfileController@editProfile' ) -> name( 'profile' ) -> middleware( 'auth' );
 
-//Update Profile
-Route::post( '/profile', 'ProfileController@updateProfile' );
+// Update Profile
+Route::post( '/profile/edit', 'ProfileController@updateProfile' ) -> name( 'profile.update' ) -> middleware( 'auth' );
 
-//Change Password
+// Change Password
 Route::get( '/profile/change-password', 'ProfileController@changePassword' ) -> name( 'changePassword' ) -> middleware( 'auth' );
 
-//Route::get( '/profile/edit', 'ProfileController@viewProfile' );
+// View Profile
+Route::get( '/profile/{username}', 'ProfileController@getProfile' ) -> name( 'profile.index' );
 
+/**
+* Friends
+**/
+
+Route::get( '/friends', 'FriendController@index' ) -> name( 'friend.index' ) -> middleware( 'auth' );
+
+Route::get( '/friends/add/{username}', 'FriendController@getAdd' ) -> name( 'friend.add' ) -> middleware( 'auth' );
+
+Route::get( '/friends/accept/{username}', 'FriendController@getAccept' ) -> name( 'friend.accept' ) -> middleware( 'auth' );
 
 /**
 * Timeline
 **/
+
 // index
 Route::get( '/timeline', 'TimelineController@index' ) -> name( 'timeline' );
-
-/**
-* Profile
-**/
 
 // Add Comments
 Route::post( '/timeline', 'CommentsController@store' );
@@ -71,8 +78,8 @@ Route::post( '/timeline/ajax', 'TimelineController@likeDislike' );
 
 Route::get( '/search', 'SearchController@getResults' ) -> name( 'search.results' );
 
-/*
-Route::get( '/alert', function() {
-	return redirect() -> route( 'timeline' ) -> with( 'info', 'test' );
+Route::get( '/test', function() {
+	$u2 = User::find(3);
+	return $u = User::find(1) -> friends();
+	return $u -> friendsOfMine();
 } );
-*/
