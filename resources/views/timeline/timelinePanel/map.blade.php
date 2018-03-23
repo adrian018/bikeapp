@@ -8,7 +8,7 @@
   			zoom: 11
   		})
 
-  		var decodedPath = google.maps.geometry.encoding.decodePath( "{{ $timeline -> track }}" );
+  		var decodedPath = google.maps.geometry.encoding.decodePath( "{{ $timeline -> track -> track }}" );
   		var polyline = map.drawPolyline({
   			path: decodedPath,
   			strokeColor: '#000',

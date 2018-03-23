@@ -2,20 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Timeline;
-use Carbon\Carbon;
-use App\Comment;
-use App\Usermeta;
 use Auth;
 use App\User;
+use App\Comment;
+use App\Timeline;
+use App\Usermeta;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 
 class TimelineController extends Controller {
 	public function index() {
 		
-		$timelines = Timeline::paginate(10);
-		// return $timelines -> avatarUrl();
+		// $timelines = Timeline::paginate(10);
+		$timelines = Timeline::with( 'user', 'track' ) -> paginate( 10 );
 		return view( 'timeline.home', compact( 'timelines' ) );
 	}
 	

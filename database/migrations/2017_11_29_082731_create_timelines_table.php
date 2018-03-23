@@ -17,8 +17,6 @@ class CreateTimelinesTable extends Migration
             $table->increments('id');
             $table->integer('user_id');
             $table->integer('track_id');
-            $table->text('info');
-            $table->text('track');
             $table->text('likes') -> default('a:2:{s:5:"likes";a:0:{}s:8:"dislikes";a:0:{}}');
             $table->timestamps();
         });

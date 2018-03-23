@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
 use Validator;
+use App\Track;
+use App\User;
+use App\Profile;
+use App\Timeline;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Input as Input;
-use Auth;
-use App\Profile;
-use App\Timeline;
-use App\Track;
-use App\User;
 
 
 class ProfileController extends Controller {

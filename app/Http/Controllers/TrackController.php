@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
 use Validator;
+use App\Track;
+use App\Profile;
+use App\Timeline;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Input as Input;
-use Auth;
-use App\Profile;
-use App\Timeline;
-use App\Track;
 
 class TrackController extends Controller {
 
@@ -42,9 +42,7 @@ class TrackController extends Controller {
         $timeline = new Timeline();
         $timeline -> user_id = $request -> user_id;
         $timeline -> track_id = $request -> track_id;
-        $timeline -> info = serialize( $request -> info );
-        $timeline -> track =  $request -> track;
-        
+               
         if ( Timeline::where( 'track_id', '=', $request -> track_id ) -> count() > 0 ) {
             return redirect( '/tracks/' . $timeline -> track_id )
             -> with( 'status', array(  'warning' , 'Cursa a fost distribuita deja' ) ); 

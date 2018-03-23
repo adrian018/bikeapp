@@ -51,6 +51,11 @@ class User extends Authenticatable {
         }
         return url('public/avatars/' . $this -> id . '/' . $this -> avatar );
     }
+
+    /*
+    * Friends Stuff
+    */
+
     // https://laravel.com/docs/5.6/eloquent-relationships#many-to-many
     public function friendsOfMine() {
         return $this->belongsToMany( 'App\User', 'friends', 'user_id', 'friend_id' );
@@ -100,4 +105,17 @@ class User extends Authenticatable {
     public function isFriendsWith( User $user ) {
         return (bool) $this -> friends() -> where( 'id', $user -> id ) -> count();
     }
+
+     /*
+    * Timeline Stuff
+    */
+
+    public function getTimelineTracks() {
+        // arg 1 = model
+        // arg 2 = pivotul
+        // arg 3 = cheia primara din model
+        // arg 4 = cheia primara din pivot
+        return $this -> belongsToMany( 'App\User', 'timelines', 'id', 'user_id' ) -> withPivot( 'track_id' );
+    }
+
 }

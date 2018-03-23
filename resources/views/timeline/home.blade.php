@@ -25,14 +25,15 @@
         <div class="col-md-9">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                  Cursa {{ $timeline -> info[0]  }}
+                    Cursa {{  $timeline -> track -> meta[ 0 ] }}
                 </div>
                 <div class="panel-body">
-                      @include( 'timeline.timelinePanel.map' )
+                    @include( 'timeline.timelinePanel.map' ) 
                 </div>
+
                 <div class="panel-footer clearfix">
                   
-                    @include( 'timeline.timelinePanel.addComment' )
+                   @include( 'timeline.timelinePanel.addComment' )
                    
                     @if( count( $timeline -> comments ) > 0 ) 
                         
@@ -43,7 +44,6 @@
                         @endforeach
 
                     @endif
-                    
                     @include( 'timeline.timelineFooter.status' ) 
 
                 </div>

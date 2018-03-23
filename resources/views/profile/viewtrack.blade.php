@@ -141,14 +141,8 @@ function addtracks( pl, culoare, zoom ) {
                     <div class="btn-group">
                         <form action="{{ route( 'shareTrack') }}" method="POST" class="pull-left">
                             <input name="user_id" type="hidden" value="{{ Auth::id() }}">
-                            {{ csrf_field() }}
-                            <input name="info[]" type="hidden" value="{{ $track -> meta[ 0 ] }}">
                             <input name="track_id" type="hidden" value="{{ $track -> id }}">
-                            <input name="info[]" type="hidden" value="{{ $track -> meta[ 3 ] }}">
-                            <input name="info[]" type="hidden" value="{{ $track -> meta[ 4 ] }}">
-                            <input name="info[]" type="hidden" value="{{ $track -> meta[ 2 ] }}">
-                            <input name="info[]" type="hidden" value="{{ $track -> meta[ 1 ] }}">
-                            <input name="track" type="hidden" value="{{ $track -> track }}">
+                            {{ csrf_field() }}
                             <input type="submit" class="btn btn-success" value="Share">
                         </form>
                         <a href="{{ route( 'tracks' ) }}" class="btn btn-primary pull-left">Inapoi la curse</a>
