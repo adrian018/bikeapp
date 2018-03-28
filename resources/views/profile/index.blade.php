@@ -8,23 +8,25 @@
 			<div class="col-lg-5">
 				@include('blocks.userblock')
 				<hr>
-				{{--  
+				 
 				@forelse( $statuses as $status )
-					<div class="media">
-						@include('blocks.statuses.useravatar')
-						<div class="media-body">
-							@include('blocks.statuses.content')
+					<div class="row">
 
-							@if(Auth::check() && (Auth::user()->isFriendsWith($user) || Auth::id() === $user->id))
-								@include('blocks.statuses.replyform')
-							@endif
-						</div>
-					</div>
+	                    <div class="col-xs-2">
+	                        @include('blocks.statuses.useravatar')
+	                    </div>
+	                    <div class="col-xs-10">
+	                        @include('blocks.statuses.content')
+	                        @if( $is_friend || Auth::user() -> id === $status -> user -> id )
+	                        	@include('blocks.statuses.replyform')
+	                        @endif
+	                    </div>
+	                </div>
 					<hr>
 				@empty
 					<p>{{ $user->getFirstNameOrUsername() }} hasn't posted anything yet.</p>
 				@endforelse
-				--}}
+				
 			</div>
 			
 			<div class="col-lg-4 col-lg-offset-3">

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Auth;
 use App\User;
+use App\Status;
 use App\Comment;
 use App\Timeline;
 use App\Usermeta;
@@ -13,58 +14,67 @@ use Illuminate\Http\Request;
 
 class TimelineController extends Controller {
 	public function index() {
-		
-		// $timelines = Timeline::paginate(10);
 		$timelines = Timeline::with( 'user', 'track' ) -> paginate( 10 );
+
 		return view( 'timeline.home', compact( 'timelines' ) );
+	}	
+
+	//temporary
+	public function statusIndex() {
+		
+		$statuses = Status::notReply() -> where( function( $query ){
+			return $query -> where( 'user_id', Auth::id() ) // my posts
+				// or friends posts
+				-> orWhereIn( 'user_id', Auth::user() -> friends() -> pluck( 'id' ) );
+			} ) 
+				-> orderBy( 'created_at', 'desc' )
+				-> paginate( 10 );
+		return view( 'status.home', compact( 'statuses' ) );
 	}
 	
-	/**
-	 * likeDislike Handles the ajax request for the like/dislike button
-	 * @param  Request $request: The ajax request via post method
-	 * @return [type: json]           [description: returns the status of the call - debug purposes]
-	 */
-	public function likeDislike( Request $request ) {
-		if ( $request->isMethod('post') ){    
-			
-			$timeline = Timeline::findOrFail( $request -> timeline_id );
-			$likes = unserialize( $timeline -> likes );
-			
-			$l = array(
-				'likes' => $request -> user_id ,
-				'dislike' => $request -> user_id ,
-			);
+	public function postReply( Request $request, $status_id ) {
+		$this -> validate( $request, [
+			"reply-{$status_id}"	=> 'required|max:1000',
+		], [
+			'required' => 'The reply body is required'
+		]);
 
-			if( $request -> thumb_type == 'like' ) {
-				if ( !in_array( $l[ 'likes' ], $likes[ 'likes' ] ) ) {
-					$likes[ 'likes' ][] =  (int)$l[ 'likes' ];
-					try {
-						$timeline -> update( array( 'likes' => serialize( $likes ) ) );
-						return response()->json(['response' => 'Like cu succes']);
-					} catch (\Exception $e) {
-						return response()->json([ 'response' => $e ]);
-					}
-				} else {
-					return response()->json(['response' => 'Like dat deja']);
-				}
-			} else {
-				if ( !in_array( $l[ 'dislike' ], $likes[ 'dislikes' ] ) ) {
-					$likes[ 'dislikes' ][] =  (int)$l[ 'dislike' ];
-					return response()->json(['response' => 'Dislike cu succes']);
-					try {
-						$timeline -> update( array( 'likes' => serialize( $likes ) ) );
-					} catch (\Exception $e) {
-						return $e;
-					}
-				} else {
-					return response()->json(['response' => 'Dislike dat deja']);
-				}
-			}
-
-
-		} else {
-			return response()->json(['response' => 'API Error']);
+		$status = Status::notReply() -> find( $status_id );
+		
+		if( !$status ) {
+			return redirect() -> route( 'status' ) -> with( 'info', 'Error' );
 		}
 
+		/*
+			if you are NOT friends with the owner of the status
+			AND you don't own the status
+
+			without the 2nd condition you can't reply to your own statuses
+		*/
+
+		if( !Auth::user() -> isFriendsWith( $status -> user ) && Auth::id() !== $status -> user -> id ) {
+			return redirect() -> route( 'status' );
+		}
+		
+		$status -> replies() -> create([
+			'body' => request("reply-{$status_id}"),
+			'user_id' => Auth::id(),
+		]);
+
+		return redirect() -> back();
+	}
+
+
+	public function postStatus( Request $request ) {
+		$this -> validate( $request, [
+			'status'	=> 'required|max:1000',
+		] );
+
+		// referinta catre metoda statuses din Users prin hasMany
+		Auth::user() -> statuses() -> create([
+			'body'	=> $request -> status,
+		]);
+
+		return redirect() -> route( 'status' ) -> with( 'info', 'Status posted' );
 	}
 }

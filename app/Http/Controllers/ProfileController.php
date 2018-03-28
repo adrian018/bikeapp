@@ -44,11 +44,13 @@ class ProfileController extends Controller {
 
     public function getProfile( $username ) {
         $user = User::where( 'username', $username ) -> first();
+        $statuses = $user -> statuses() -> notReply() -> get();
+        $is_friend = Auth::user() -> isFriendsWith( $user );
+       
         if( !$user ) {
             abort( 404 );
         }
-
-        return view( 'profile.index', compact( 'user' ) );
+        return view( 'profile.index', compact( 'user', 'statuses', 'is_friend' ) );
     }
 
     /**
@@ -110,6 +112,5 @@ class ProfileController extends Controller {
     public function changePassword() {
         return view( 'profile.changepassword' );
     }
-
 
 }

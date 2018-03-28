@@ -32,49 +32,29 @@
         </div>
         <hr>
     @endif
-
-    @forelse( $timelines as $timeline )
     <div class="row">
-
-        <div class="col-md-3">
-            {{-- profile picture --}}
-            @include('timeline.timelinePanel.profilePicture')
-        </div>
-        <div class="col-md-9">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    Cursa {{  $timeline -> track -> meta[ 0 ] }}
+        <div class="col-lg-6 col-lg-offset-3">
+            @forelse($statuses as $status)
+                <div class="row">
+                    <div class="col-xs-2">
+                        @include('blocks.statuses.useravatar')
+                    </div>
+                    <div class="col-xs-10">
+                        @include('blocks.statuses.content')
+                        @include('blocks.statuses.replyform')
+                    </div>
                 </div>
-                <div class="panel-body">
-                    @include( 'timeline.timelinePanel.map' ) 
-                </div>
-
-                <div class="panel-footer clearfix">
-                  
-                   @include( 'timeline.timelinePanel.addComment' )
-                   
-                    @if( count( $timeline -> comments ) > 0 ) 
-                        
-                        @foreach( $timeline -> comments as $comment )
-                            <section class="row post" id="comment-{{ $comment -> id }}">
-                                @include( 'timeline.timelinePanel.comments' )
-                            </section>
-                        @endforeach
-
-                    @endif
-                    @include( 'timeline.timelineFooter.status' ) 
-
-                </div>
-            </div>
+                <hr>
+            @empty
+                <p>There's nothing in your timeline yet.</p>
+            @endforelse
         </div>
     </div>
-    @empty
-    Timeline Gol :(
-    @endforelse
+  
 
     <div class="row">
         <div class="col-md-4 col-md-offset-4">
-            {{ $timelines -> links() }}
+            {{ $statuses -> links() }}
         </div>
     </div>
 </div>

@@ -67,10 +67,21 @@ Route::get( '/friends/accept/{username}', 'FriendController@getAccept' ) -> name
 Route::get( '/timeline', 'TimelineController@index' ) -> name( 'timeline' );
 
 // Add Comments
-Route::post( '/timeline', 'CommentsController@store' );
+Route::post( '/timeline', 'CommentsController@store' ) -> middleware( 'auth' );
 
 // Like/dislike Ajax
 Route::post( '/timeline/ajax', 'TimelineController@likeDislike' );
+
+/**
+* Statuses
+**/
+
+Route::get( '/status', 'TimelineController@statusIndex' ) -> name( 'status' );
+
+Route::post( '/timeline', 'TimelineController@postStatus' ) -> name( 'status.post' ) -> middleware( 'auth' );
+
+Route::post( '/timeline/{status_id}/reply', 'TimelineController@postReply' ) -> name( 'status.reply' ) -> middleware( 'auth' );
+
 
 /**
 * Search

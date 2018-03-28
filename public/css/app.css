@@ -2140,7 +2140,7 @@ pre code {
 }
 
 .col-xs-2 {
-  width: 16.66666667%;
+  width: 16.666%;
 }
 
 .col-xs-3 {
@@ -6538,9 +6538,9 @@ a.thumbnail.active {
   overflow: hidden;
 }
 
-.media-body {
+/* .media-body {
   width: 10000px;
-}
+} */
 
 .media-object {
   display: block;

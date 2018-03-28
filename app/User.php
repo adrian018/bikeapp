@@ -26,6 +26,10 @@ class User extends Authenticatable {
         'password', 'remember_token',
     ];
 
+    /*
+    *  Names and usernames
+    */
+
     public function getName() {
         if( $this -> first_name && $this -> last_name ) {
             return "{$this -> first_name} {$this -> last_name}";
@@ -103,10 +107,10 @@ class User extends Authenticatable {
     }
 
     public function isFriendsWith( User $user ) {
-        return (bool) $this -> friends() -> where( 'id', $user -> id ) -> count();
+        return (bool)$this -> friends() -> where( 'id', $user -> id ) -> count();
     }
 
-     /*
+    /*
     * Timeline Stuff
     */
 
@@ -116,6 +120,10 @@ class User extends Authenticatable {
         // arg 3 = cheia primara din model
         // arg 4 = cheia primara din pivot
         return $this -> belongsToMany( 'App\User', 'timelines', 'id', 'user_id' ) -> withPivot( 'track_id' );
+    }
+
+    public function statuses() {
+        return $this -> hasMany( 'App\Status', 'user_id' );
     }
 
 }
