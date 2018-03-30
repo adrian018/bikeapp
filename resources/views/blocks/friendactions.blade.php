@@ -12,7 +12,7 @@
 
 	<p>You and {{ $user->getNameOrUsername() }} are friends.</p>
 
-	<form action="" method="post">
+	<form action="{{ route( 'friend.delete', [ 'username' => $user -> username ] ) }}" method="post">
 		<input type="submit" value="Unfriend" class="btn btn-danger">
 		{!! csrf_field() !!}
 	</form>

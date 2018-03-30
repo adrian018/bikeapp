@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\User;
 use Auth;
+use App\User;
+use Illuminate\Http\Request;
 
 class FriendController extends Controller {
     public function index() {
@@ -56,6 +56,18 @@ class FriendController extends Controller {
     	Auth::user() -> acceptFriendsRequest( $user );
 
     	return redirect() -> route( 'profile.index', [ 'username' => $username ] );
+    }
+
+    public function friendDelete( $username ){
+        $user = User::where( 'username', $username ) -> get();
+        //$user = User::where('username', $username)->firstOrFail();
+        dd( $user );
+        if( !Auth::user() -> isFriendsWith( $user ) ){
+           return redirect() -> back();
+        }
+
+        Auth::user() -> deleteFriend( $user );
+        return redirect() -> back() -> with( 'info', 'Friend deleted' );
     }
 
 }

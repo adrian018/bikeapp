@@ -19,8 +19,21 @@ class Status extends Model{
     public function scopeNotReply( $query ){
     	return $query -> whereNull( 'parent_id' );
     }
-
+    
     public function replies() {
     	return $this -> hasMany( 'App\Status', 'parent_id' );
     }
+
+    /**
+     * Polymorph class
+     * @return [relationship]
+     * @param model's name
+     * @param method's name
+     */
+
+    public function likes() {
+        return $this -> morphMany( 'App\Like', 'likeable' );
+    }
+
+    
 }

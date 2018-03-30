@@ -59,6 +59,8 @@ Route::get( '/friends/add/{username}', 'FriendController@getAdd' ) -> name( 'fri
 
 Route::get( '/friends/accept/{username}', 'FriendController@getAccept' ) -> name( 'friend.accept' ) -> middleware( 'auth' );
 
+Route::post( '/profile/delete/{username}', 'FriendController@friendDelete' ) -> name( 'friend.delete' ) -> middleware( 'auth' );;
+
 /**
 * Timeline
 **/
@@ -81,6 +83,8 @@ Route::get( '/status', 'TimelineController@statusIndex' ) -> name( 'status' );
 Route::post( '/timeline', 'TimelineController@postStatus' ) -> name( 'status.post' ) -> middleware( 'auth' );
 
 Route::post( '/timeline/{status_id}/reply', 'TimelineController@postReply' ) -> name( 'status.reply' ) -> middleware( 'auth' );
+
+Route::get( '/timeline/{status_id}/like', 'TimelineController@getLike' ) -> name( 'status.like' ) -> middleware( 'auth' );
 
 
 /**

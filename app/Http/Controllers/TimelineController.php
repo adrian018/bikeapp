@@ -77,4 +77,25 @@ class TimelineController extends Controller {
 
 		return redirect() -> route( 'status' ) -> with( 'info', 'Status posted' );
 	}
+
+	public function getLike( $status_id ) {
+		$status = Status::find( $status_id );
+		if( !$status ) {
+			return redirect() -> back();
+		}
+
+		if( !Auth::user() -> isFriendsWith( $status -> user ) ) {
+			// momentan permit orice like
+			//return redirect() -> back();
+		}
+
+		if( Auth::user() -> hasLikedStatus( $status ) ) {
+			return redirect() -> back();
+		}
+
+		
+		$like = $status -> likes() ->create([ 'user_id' => Auth::user() -> id ]);
+		Auth::user() -> likes() -> save( $like );
+		return redirect() -> back();
+	}
 }

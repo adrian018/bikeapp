@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Status;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -96,6 +97,10 @@ class User extends Authenticatable {
         // sync verifica inainte
     }
 
+    public function deleteFriend( User $user ){
+        $this -> frinedOf() -> detach( $user -> id );
+    }
+
     public function acceptFriendsRequest( User $user ) {
         $this   -> friendRequests() 
                 -> where( 'id', $user -> id ) 
@@ -103,7 +108,7 @@ class User extends Authenticatable {
                 -> pivot 
                 -> update( [
                     'accepted' => true,
-            ] );
+                ] );
     }
 
     public function isFriendsWith( User $user ) {
@@ -126,4 +131,18 @@ class User extends Authenticatable {
         return $this -> hasMany( 'App\Status', 'user_id' );
     }
 
+    /*
+    * Like Stuff
+    */
+
+    public function hasLikedStatus(Status $status) {
+        return (bool)$status -> 
+                likes ->
+                where( 'user_id', '=', $this -> id ) ->
+                count();
+    }
+
+    public function likes() {
+        return $this -> hasMany( 'App\Like', 'user_id' );
+    }
 }
